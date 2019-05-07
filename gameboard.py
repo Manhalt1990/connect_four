@@ -87,6 +87,12 @@ class Gameboard:
     def is_inside_gameboard_boundaries(self, row, column):
         return not(row >= len(self.board) or column >= len(self.board[row]) or row < 0 or column < 0)
 
+    def get_piece(self, row, column):
+        return self.board[row][column]
+
+    def has_color_in_location(self, color, row, column):
+        return self.get_piece(row, column) == color
+
     def printGrid(self):
         for x in range(self.columnLength):
             print(str(x) + "|", end='')
