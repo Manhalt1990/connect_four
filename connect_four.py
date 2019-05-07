@@ -2,21 +2,22 @@ import sys
 import random
 import player
 import gameboard
+import cpu_player
 
 def game_loop():
     isPlaying = parseIsPlaying(input("This is connect four. Would you like to play? Y or N "))
+    isSinglePlayer = parseIsPlaying(input("Would like to play against the CPU? Y or N "))
     while(isPlaying):
         board = gameboard.Gameboard()
-        print("Player 1 is R (Red)")
-        print("Player 2 is B (Blue)")
         player1 = create_player("R", "Player 1")
-        player2 = create_player("B", "Player 2")
+        player2 = create_player("B", "Player 2") if not(isSinglePlayer) else cpu_player.CpuPlayer(board, "B", "CPU Player 2")
+        print(player1.description)
+        print(player2.description)
         board.printGrid()
         currentPlayer = player1
         isGameOver = False
         while(not(isGameOver)):
-            print(currentPlayer.name + "'s turn")
-            columnIndex = parseColumnInput()
+            columnIndex = parseColumnInput(currentPlayer)
             try:
                 rowColumn = board.input_piece(currentPlayer.color, columnIndex)
                 board.printGrid()
@@ -35,11 +36,12 @@ def parseIsPlaying(isPlayingInput):
         exit()
     return True
 
-def parseColumnInput():
+def parseColumnInput(currentPlayer):
+    print(currentPlayer.name + "'s turn")
     isParsed = False
     while(not(isParsed)):
         try:
-            columnInput = int(input("What column do you want you piece in? "))
+            columnInput = currentPlayer.get_input()
         except:
             print("Input has to be a number from 0 to 6.")
             continue
