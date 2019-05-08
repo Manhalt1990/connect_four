@@ -1,6 +1,8 @@
 import unittest
 import gameboard
 import cpu_player
+import player
+import utility
 
 class TestWinningScenarios(unittest.TestCase):
 
@@ -37,8 +39,80 @@ class TestCpuPlayer(unittest.TestCase):
         board = gameboard.Gameboard()
         cpuPlayer = cpu_player.CpuPlayer(board, "R", "CPU Player")
         board.input_piece(cpuPlayer.color, column)
-        availableRow = cpuPlayer.board.get_available_space_in_column(column)[0]
-        self.assertTrue(availableRow == expectedAvailableRow)
+        actualRow = cpuPlayer.board.get_available_space_in_column(column)[0]
+        self.assertTrue(actualRow == expectedAvailableRow)
+
+    def testBlockUserFromHorizontalWin(self):
+        expectedColumn = 3
+        expectedRow = 5
+        board = gameboard.Gameboard()
+        cpuPlayer = cpu_player.CpuPlayer(board, "R", "CPU Player")
+        player1 = player.Player("R", "Player1")
+        board.input_piece(player1.color, 0)
+        board.input_piece(player1.color, 1)
+        board.input_piece(player1.color, 2)
+        actualColumn = cpuPlayer.get_input()
+        actualRow = cpuPlayer.lastRow
+        board.input_piece(cpuPlayer.color, actualColumn)
+        self.assertTrue(actualColumn == expectedColumn and actualRow == expectedRow and board.get_piece(actualRow, actualColumn) == cpuPlayer.color)
+
+    def testBlockUserFromVerticalWin(self):
+        expectedColumn = 0
+        expectedRow = 2
+        board = gameboard.Gameboard()
+        cpuPlayer = cpu_player.CpuPlayer(board, "B", "CPU Player")
+        player1 = player.Player("R", "Player1")
+        board.input_piece(player1.color, 0)
+        board.input_piece(player1.color, 0)
+        board.input_piece(player1.color, 0)
+        actualColumn = cpuPlayer.get_input()
+        actualRow = cpuPlayer.lastRow
+        board.input_piece(cpuPlayer.color, actualColumn)
+        self.assertTrue(actualColumn == expectedColumn and actualRow == expectedRow and board.get_piece(actualRow, actualColumn) == cpuPlayer.color)
+
+    def testBlockUserFromSWToNEWin(self):
+        expectedColumn = 3
+        expectedRow = 2
+        board = gameboard.Gameboard()
+        cpuPlayer = cpu_player.CpuPlayer(board, "B", "CPU Player")
+        player1 = player.Player("R", "Player1")
+
+        board.input_piece(player1.color, 0)
+        board.input_piece(cpuPlayer.color, 1)
+        board.input_piece(player1.color, 1)
+        board.input_piece(cpuPlayer.color, 2)
+        board.input_piece(player1.color, 2)
+        board.input_piece(player1.color, 2)
+        board.input_piece(cpuPlayer.color, 3)
+        board.input_piece(player1.color, 3)
+        board.input_piece(player1.color, 3)
+
+        actualColumn = cpuPlayer.get_input()
+        actualRow = cpuPlayer.lastRow
+        board.input_piece(cpuPlayer.color, actualColumn)
+        self.assertTrue(actualColumn == expectedColumn and actualRow == expectedRow and board.get_piece(actualRow, actualColumn) == cpuPlayer.color)
+
+    def testBlockUserFromNWToSEWin(self):
+        expectedColumn = 0
+        expectedRow = 2
+        board = gameboard.Gameboard()
+        cpuPlayer = cpu_player.CpuPlayer(board, "B", "CPU Player")
+        player1 = player.Player("R", "Player1")
+
+        board.input_piece(player1.color, 0)
+        board.input_piece(cpuPlayer.color, 0)
+        board.input_piece(player1.color, 0)
+        board.input_piece(cpuPlayer.color, 1)
+        board.input_piece(player1.color, 1)
+        board.input_piece(player1.color, 1)
+        board.input_piece(cpuPlayer.color, 2)
+        board.input_piece(player1.color, 2)
+        board.input_piece(player1.color, 3)
+
+        actualColumn = cpuPlayer.get_input()
+        actualRow = cpuPlayer.lastRow
+        board.input_piece(cpuPlayer.color, actualColumn)
+        self.assertTrue(actualColumn == expectedColumn and actualRow == expectedRow and board.get_piece(actualRow, actualColumn) == cpuPlayer.color)
 
 if __name__ == '__main__':
     unittest.main()
