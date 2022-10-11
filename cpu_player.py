@@ -1,6 +1,7 @@
 import player
 import gameboard
 import random
+import utility
 
 class CpuPlayer(player.Player):
     def __init__(self, board, color, name):
@@ -25,19 +26,19 @@ class CpuPlayer(player.Player):
         for row in range(self.board.rowLength-1, -1, -1):
             for column in range(self.board.columnLength):
                 if (self.is_location_inbounds(column) 
-                     and self.is_player_in_winning_state(self.board.get_vertical_connections_count, row, column, column)):
+                     and self.is_player_in_winning_state(self.board.get_vertical_connections_count, row, column)):
                     self.set_last_location(column)
                     return True
                 elif (self.is_location_inbounds(column + 3) 
-                     and self.is_player_in_winning_state(self.board.get_horizontal_connections_count, row, column, column + 3)):
+                     and self.is_player_in_winning_state(self.board.get_horizontal_connections_count, row, column)):
                     self.set_last_location(column + 3)
                     return True
                 elif (self.is_location_inbounds(column + 3) 
-                     and self.is_player_in_winning_state(self.board.get_se_to_nw_connections_count, row, column, column - 3)):
+                     and self.is_player_in_winning_state(self.board.get_se_to_nw_connections_count, row, column)):
                     self.set_last_location(column - 3)
                     return True
                 elif (self.is_location_inbounds(column + 3) 
-                     and self.is_player_in_winning_state(self.board.get_sw_to_ne_connections_count, row, column, column + 3)):
+                     and self.is_player_in_winning_state(self.board.get_sw_to_ne_connections_count, row, column)):
                     self.set_last_location(column + 3)
                     return True
         return False
@@ -49,10 +50,10 @@ class CpuPlayer(player.Player):
         except:
             return False
 
-    def is_player_in_winning_state(self, method, row, column, possibleInputColumn):
+    def is_player_in_winning_state(self, method, row, column):
         pieceColor = self.board.get_piece(row, column)
-        lastPieceInColumn = self.board.get_last_piece_in_column(possibleInputColumn)
-        if (lastPieceInColumn != self.color 
+        lastPieceInColumn = self.board.get_last_piece_in_column(column)
+        if (lastPieceInColumn != self.color
             and (pieceColor != self.color or pieceColor != self.board.blankPiece)):
             return method(row, column) > 2
         return False

@@ -43,17 +43,20 @@ class TestCpuPlayer(unittest.TestCase):
         self.assertTrue(actualRow == expectedAvailableRow)
 
     def testBlockUserFromHorizontalWin(self):
-        expectedColumn = 3
+        expectedColumn = 4
         expectedRow = 5
         board = gameboard.Gameboard()
         cpuPlayer = cpu_player.CpuPlayer(board, "R", "CPU Player")
-        player1 = player.Player("R", "Player1")
-        board.input_piece(player1.color, 0)
+        player1 = player.Player("B", "Player1")
+        board.input_piece(cpuPlayer.color, 0)
         board.input_piece(player1.color, 1)
         board.input_piece(player1.color, 2)
+        board.input_piece(player1.color, 3)
         actualColumn = cpuPlayer.get_input()
         actualRow = cpuPlayer.lastRow
         board.input_piece(cpuPlayer.color, actualColumn)
+        utility.printRowAndColumn(actualRow, actualColumn)
+        board.printGrid()
         self.assertTrue(actualColumn == expectedColumn and actualRow == expectedRow and board.get_piece(actualRow, actualColumn) == cpuPlayer.color)
 
     def testBlockUserFromVerticalWin(self):
