@@ -19,7 +19,7 @@ class Gameboard:
         for x in range(5, -1, -1):
             if(self.board[x][column] == self.blankPiece):
                 return [x,column]
-        raise
+        raise RuntimeError("No Black Spaces")
 
     def get_last_piece_in_column(self, column):
         for x in range(5, -1, -1):
@@ -40,7 +40,7 @@ class Gameboard:
         southeast = self.check_southeast(color, row, column)
         northwest = self.check_northwest(color, row, column)
         return southeast + northwest - 1
-    
+
     def get_sw_to_ne_connections_count(self, row, column):
         color = self.board[row][column]
         southwest = self.check_southwest(color, row, column)
@@ -94,7 +94,7 @@ class Gameboard:
         right = self.check_right(color, row, column)
         left = self.check_left(color, row, column)
         return right + left - 1
-        
+
     def check_right(self, color, row, column):
         if(self.is_inside_gameboard_boundaries(row, column) and self.board[row][column] == color):
             return 1 + self.check_right(color, row, column+1)

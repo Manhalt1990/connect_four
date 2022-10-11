@@ -25,19 +25,19 @@ class CpuPlayer(player.Player):
     def find_blocking_column(self):
         for row in range(self.board.rowLength-1, -1, -1):
             for column in range(self.board.columnLength):
-                if (self.is_location_inbounds(column) 
+                if (self.is_location_inbounds(column)
                      and self.is_player_in_winning_state(self.board.get_vertical_connections_count, row, column)):
                     self.set_last_location(column)
                     return True
-                elif (self.is_location_inbounds(column + 3) 
+                elif (self.is_location_inbounds(column + 3)
                      and self.is_player_in_winning_state(self.board.get_horizontal_connections_count, row, column)):
                     self.set_last_location(column + 3)
                     return True
-                elif (self.is_location_inbounds(column + 3) 
+                elif (self.is_location_inbounds(column + 3)
                      and self.is_player_in_winning_state(self.board.get_se_to_nw_connections_count, row, column)):
                     self.set_last_location(column - 3)
                     return True
-                elif (self.is_location_inbounds(column + 3) 
+                elif (self.is_location_inbounds(column + 3)
                      and self.is_player_in_winning_state(self.board.get_sw_to_ne_connections_count, row, column)):
                     self.set_last_location(column + 3)
                     return True
@@ -64,7 +64,7 @@ class CpuPlayer(player.Player):
     def find_next_piece_column(self):
         if self.lastColumn + 1 < self.board.columnLength and self.board.board[self.lastRow][self.lastColumn+1] == self.board.blankPiece:
             self.set_last_location(self.lastColumn+1)
-            
+
         elif self.lastRow - 1 >= 0 and self.board.board[self.lastRow-1][self.lastColumn] == self.board.blankPiece:
             self.set_last_location(self.lastColumn)
 
@@ -72,7 +72,7 @@ class CpuPlayer(player.Player):
             self.set_last_location(self.lastColumn-1)
 
         else:
-            self.set_random_row_and_column() 
+            self.set_random_row_and_column()
 
     def set_last_location(self, column):
         self.lastColumn = column
